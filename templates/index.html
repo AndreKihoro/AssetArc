@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AssetArc | Dashboard</title>
+    <style>
+        body { font-family: sans-serif; background: #f4f4f4; text-align: center; padding: 50px; }
+        .card { background: white; padding: 20px; border-radius: 10px; display: inline-block; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .price { color: #2ecc71; font-weight: bold; font-size: 1.5em; }
+        .balance { color: #34495e; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <h1>AssetArc Dashboard</h1>
+    <div class="card">
+        <h3>Bitcoin Holdings</h3>
+        <p class="balance">Balance: <strong>{{ balance }} BTC</strong></p>
+        <hr>
+        <p>Current Price: <span class="price">KSh {{ "{:,.2f}".format(price_kes) }}</span></p>
+        <h2>Your Total Wealth:</h2>
+        <h1 style="color: #27ae60;">KSh {{ "{:,.2f}".format(total_kes) }}</h1>
+        <p style="color: #7f8c8d;">($ {{ "{:,.2f}".format(total_usd) }} USD)</p>
+    </div>
+    <p>Created by Andre Kihoro Mugo</p>
+</body>
+</html>
