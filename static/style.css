@@ -1,4 +1,6 @@
-/* AssetArc Pro Dashboard Styles */
+/* AssetArc Professional Stylesheet 
+   Fix: Includes standard background-clip for compatibility
+*/
 
 :root {
     --bg-color: #0f172a;
@@ -15,6 +17,7 @@
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     background-color: var(--bg-color);
+    /* Subtle glow effects in the background corners */
     background-image: 
         radial-gradient(circle at 10% 20%, rgba(56, 189, 248, 0.05) 0%, transparent 40%),
         radial-gradient(circle at 90% 80%, rgba(245, 158, 11, 0.05) 0%, transparent 40%);
@@ -24,17 +27,16 @@ body {
     align-items: center;
     min-height: 100vh;
     margin: 0;
-    overflow: hidden;
 }
 
 .dashboard-card {
     background: var(--glass-bg);
     backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px); /* Safari support */
+    -webkit-backdrop-filter: blur(16px);
     border: 1px solid var(--glass-border);
     border-radius: 32px;
     padding: 3rem;
-    width: 100%;
+    width: 90%;
     max-width: 400px;
     text-align: center;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
@@ -42,49 +44,36 @@ body {
 
 .logo {
     font-weight: 800;
-    font-size: 1.25rem;
-    letter-spacing: -0.025em;
+    font-size: 1.2rem;
     color: var(--accent-blue);
-    margin-bottom: 2.5rem;
+    margin-bottom: 2rem;
     display: block;
     text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
 .label {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: 600;
     color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    margin-bottom: 0.5rem;
 }
 
 .total-ksh {
-    font-size: 3.5rem;
+    font-size: 3.2rem;
     font-weight: 800;
-    margin: 0.5rem 0;
-    background: linear-gradient(to bottom right, #ffffff 30%, var(--accent-blue));
+    margin: 1rem 0;
+    /* Gradient text effect */
+    background: linear-gradient(to right, #ffffff, var(--accent-blue));
     -webkit-background-clip: text;
     background-clip: text; /* Standard property for compatibility */
     color: transparent;
     -webkit-text-fill-color: transparent;
 }
 
-/* Profit/Loss Badge Styles */
-.status-badge {
-    display: inline-block;
-    padding: 0.4rem 1rem;
-    border-radius: 99px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    margin-top: 0.5rem;
-}
-
-.profit { background: rgba(34, 197, 94, 0.1); color: var(--success-green); }
-.loss { background: rgba(239, 68, 68, 0.1); color: var(--error-red); }
-
 .asset-container {
-    margin-top: 3rem;
+    margin-top: 2.5rem;
     background: rgba(0, 0, 0, 0.2);
     border-radius: 20px;
     padding: 1.25rem;
@@ -96,5 +85,14 @@ body {
 .asset-name {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
+    font-weight: 600;
+    color: var(--btc-orange);
+}
+
+.live-indicator {
+    width: 8px;
+    height: 8px;
+    background-color: var(--success-green);
+    border-radius: 50
 }

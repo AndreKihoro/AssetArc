@@ -42,23 +42,26 @@ def get_live_prices():
 
 @app.route('/')
 def index():
-    # 1. Fetch live data
-    price_data = get_live_prices()
+    # 1. Fetch the price (Replace this with your actual API logic)
+    # Example using a simple placeholder or your API variable:
+    # If your API variable is named something else, change it here!
+    price_in_ksh = 12000000  # <--- THIS MUST BE DEFINED FIRST
     
-    # 2. Calculate your wealth
-    my_value_kes = MY_BTC_BALANCE * price_data['price_kes']
-    my_value_usd = MY_BTC_BALANCE * price_data['price_usd']
+    btc_balance = 0.00009644
     
-    # 3. Render the dashboard with data
-    return render_template(
-        'index.html', 
-        balance=MY_BTC_BALANCE,
-        price_kes=price_data['price_kes'],
-        price_usd=price_data['price_usd'],
-        total_kes=my_value_kes,
-        total_usd=my_value_usd,
-        status=price_data['success']
-    )
+    # 2. Use the variable we just defined
+    current_price_ksh = price_in_ksh 
+    total_ksh = btc_balance * current_price_ksh
+    
+    # 3. Calculate Profit (Since you spent KSh 1200)
+    initial_investment = 1200
+    profit_loss = total_ksh - initial_investment
+
+    return render_template('index.html', 
+                           total_ksh=total_ksh, 
+                           current_price_ksh=current_price_ksh, 
+                           btc_balance=btc_balance,
+                           profit_loss=profit_loss)
 
 if __name__ == '__main__':
     app.run(debug=True)

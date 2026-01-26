@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <title>AssetArc | Dashboard</title>
 </head>
 <body>
@@ -13,7 +13,9 @@
         
         <div class="balance-label">Current Net Worth</div>
         <div class="total-ksh">KSh {{ "{:,.2f}".format(total_ksh) }}</div>
-        
+        <div class="status-badge {{ 'profit' if profit_loss >= 0 else 'loss' }}">
+    {{ '+' if profit_loss >= 0 }}{{ "{:,.2f}".format(profit_loss) }} KSh
+</div>
         <div class="asset-row">
             <div class="btc-info">
                 <div class="pulse"></div>
