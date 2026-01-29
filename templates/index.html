@@ -8,52 +8,61 @@
 </head>
 <body>
 
-    <main class="terminal-container">
-        <header class="top-bar">
-            <span class="brand">AssetArc <span class="version">v2.0</span></span>
-            <div class="live-status">
-                <div class="pulse-dot"></div>
-                LIVE FEED
-            </div>
-        </header>
+    <header class="screen-header">
+        <span class="global-brand">AssetArc</span>
+    </header>
 
-        <section class="balance-section">
-            <p class="label">Total Portfolio Value</p>
-            <h1 class="main-balance">{{ symbol }} {{ "{:,.2f}".format(total_value) }}</h1>
-            <div class="badge {{ 'profit' if profit_loss >= 0 else 'loss' }}">
-                {{ '+' if profit_loss >= 0 }}{{ "{:,.2f}".format(profit_loss) }} {{ symbol }}
+    <main class="dashboard-card">
+        <div class="card-top">
+            <div class="status-indicator">
+                <div class="pulse"></div> LIVE FEED
             </div>
-        </section>
+        </div>
 
-        <section class="controls">
-            <form method="POST" id="main-form">
-                <div class="input-grid">
-                    <div class="field">
-                        <label>BTC BALANCE</label>
-                        <input type="number" step="any" name="btc_amount" value="{{ btc_balance }}">
-                    </div>
-                    <div class="field">
-                        <label>BUY PRICE (KSH)</label>
-                        <input type="number" name="buy_price" value="{{ buy_price_ksh }}">
-                    </div>
+        <div class="logo-container">
+            <svg class="bitcoin-icon" viewBox="0 0 64 64">
+                <circle cx="32" cy="32" r="32" fill="#F7931A"/>
+                <path d="M46.1 31.1c.4-3-1.8-4.5-4.9-5.6l1-4-2.4-.6-.9 3.9c-.7-.2-1.3-.3-1.9-.5l1-3.9-2.4-.6-1 4c-.5-.1-1-.2-1.5-.4l0 0-3.4-.8-.6 2.6s1.8.4 1.8.4c1 .2 1.2.9 1.1 1.4l-1.1 4.5c.1 0 .2 0 .3.1-.1 0-.2 0-.3-.1l-1.6 6.4c-.1.3-.4.8-1.1.6 0 0-1.8-.4-1.8-.4l-1.2 2.8 3.2.8c.6.1 1.2.3 1.7.4l-1 4 2.4.6 1-4c.7.2 1.3.4 1.9.5l-1 4 2.4.6 1-4c4.1.8 7.3.5 8.6-3.3 1-3-.1-4.8-2.2-5.9 1.6-.4 2.8-1.4 3.1-3.6zm-5.6 7.8c-.7 3-5.8 1.4-7.5 1l1.3-5.4c1.7.4 6.9 1.2 6.2 4.4zm.7-7.8c-.7 2.8-4.9 1.4-6.3 1l1.2-4.9c1.4.3 5.8 1 5.1 3.9z" fill="white"/>
+            </svg>
+        </div>
+
+        <div class="display-section">
+            <p class="meta-label">Total Portfolio Value</p>
+            <div class="balance-container">
+                <h1 class="balance-text">{{ symbol }}{{ "{:,.2f}".format(total_value) }}</h1>
+            </div>
+            <div class="pnl-badge {{ 'profit' if profit_loss >= 0 else 'loss' }}">
+                {{ '+' if profit_loss >= 0 }}{{ symbol }}{{ "{:,.2f}".format(profit_loss) }}
+            </div>
+        </div>
+
+        <form method="POST" class="controls">
+            <div class="input-row">
+                <div class="input-group">
+                    <label>BTC</label>
+                    <input type="number" step="any" name="btc_amount" value="{{ btc_balance }}">
                 </div>
-
-                <div class="currency-toggle">
-                    <select name="currency" onchange="this.form.submit()">
-                        <option value="KSH" {{ 'selected' if currency == 'KSH' }}>KES</option>
-                        <option value="USD" {{ 'selected' if currency == 'USD' }}>USD</option>
-                    </select>
+                <div class="input-group">
+                    <label>COST (KSh)</label>
+                    <input type="number" name="buy_price" value="{{ buy_price_ksh }}">
                 </div>
-                
-                <button type="submit" class="primary-btn">SYNC PORTFOLIO</button>
-            </form>
-        </section>
-
-        <footer class="asset-footer">
-            <div class="asset-pill">
-                <span class="ticker">BTC/{{ currency }}</span>
-                <span class="price">{{ symbol }} {{ "{:,.0f}".format(current_price) }}</span>
             </div>
+            
+            <div class="input-group" style="margin-top: 15px;">
+                <label>ACTIVE CURRENCY</label>
+                <select name="currency" onchange="this.form.submit()">
+                    {% for curr in currencies %}
+                        <option value="{{ curr }}" {{ 'selected' if currency == curr }}>{{ curr }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <button type="submit" class="sync-btn">SYNC WEALTH</button>
+        </form>
+
+        <footer class="market-info">
+            <span>{{ currency }} PRICE</span>
+            <strong>{{ symbol }}{{ "{:,.0f}".format(current_price) }}</strong>
         </footer>
     </main>
 

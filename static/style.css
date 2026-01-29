@@ -1,21 +1,15 @@
-/* AssetArc 2026 Modern Aesthetic */
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&family=Space+Mono&display=swap');
-
 :root {
-    --bg: #030712;
-    --surface: #111827;
-    --border: #1f2937;
-    --accent: #38bdf8;
-    --text: #f3f4f6;
-    --text-muted: #6b7280;
-    --success: #10b981;
-    --error: #ef4444;
+    --bg-black: #020617;
+    --card-surface: #0f172a;
+    --sky: #38bdf8;
+    --border: rgba(255, 255, 255, 0.08);
 }
 
 body {
-    background-color: var(--bg);
-    color: var(--text);
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: var(--bg-black);
+    background-image: radial-gradient(circle at 5% 5%, rgba(56, 189, 248, 0.1), transparent 30%);
+    color: white;
+    font-family: 'Inter', system-ui, sans-serif;
     margin: 0;
     display: flex;
     justify-content: center;
@@ -23,140 +17,115 @@ body {
     height: 100vh;
 }
 
-.terminal-container {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 24px;
-    padding: 2.5rem;
-    width: 400px;
-    box-shadow: 0 50px 100px -20px rgba(0,0,0,0.8);
+.screen-header {
+    position: fixed;
+    top: 2rem;
+    left: 2rem;
 }
 
-.top-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2.5rem;
-}
-
-.brand {
-    font-weight: 800;
-    letter-spacing: -0.5px;
+.global-brand {
     font-size: 1.2rem;
-}
-
-.version {
-    font-size: 0.6rem;
-    background: var(--accent);
-    color: var(--bg);
-    padding: 2px 6px;
-    border-radius: 4px;
-    vertical-align: middle;
-}
-
-.live-status {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--success);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.pulse-dot {
-    width: 6px;
-    height: 6px;
-    background: var(--success);
-    border-radius: 50%;
-    animation: blink 1.5s infinite;
-}
-
-.balance-section { text-align: center; margin-bottom: 2rem; }
-
-.label {
-    color: var(--text-muted);
-    font-size: 0.75rem;
-    font-weight: 700;
+    font-weight: 900;
+    letter-spacing: 6px;
+    color: var(--sky);
     text-transform: uppercase;
-    margin: 0;
+    text-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
 }
 
-.main-balance {
-    font-size: 3rem;
-    font-weight: 800;
+.dashboard-card {
+    background: var(--card-surface);
+    border: 1px solid var(--border);
+    border-radius: 40px;
+    width: 400px;
+    padding: 3rem;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+    overflow: hidden; /* Clips any unexpected spills */
+}
+
+/* ANTI-SPILLING BALANCE CONTAINER */
+.balance-container {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    display: flex;
+    justify-content: center;
+}
+
+.balance-text {
+    /* Fluid typography: shrinks font as width grows */
+    font-size: clamp(1.5rem, 12vw, 3.8rem); 
+    font-weight: 900;
     margin: 0.5rem 0;
-    letter-spacing: -1px;
+    letter-spacing: -3px;
+    color: #fff;
+    text-align: center;
 }
 
-.badge {
-    display: inline-block;
-    padding: 6px 16px;
+.card-top { display: flex; justify-content: center; margin-bottom: 1.5rem; }
+.status-indicator {
+    font-size: 0.65rem;
+    font-weight: 800;
+    color: #10b981;
+    background: rgba(16, 185, 129, 0.1);
+    padding: 6px 14px;
     border-radius: 100px;
-    font-weight: 800;
-    font-size: 0.8rem;
 }
 
-.profit { background: rgba(16, 185, 129, 0.1); color: var(--success); }
-.loss { background: rgba(239, 68, 68, 0.1); color: var(--error); }
-
-.input-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-    margin-bottom: 15px;
+.pulse {
+    width: 6px; height: 6px; background: #10b981; border-radius: 50%; display: inline-block;
+    margin-right: 6px; animation: blink 2s infinite;
 }
 
-.field label {
-    font-size: 0.6rem;
-    font-weight: 800;
-    color: var(--text-muted);
-    display: block;
-    margin-bottom: 6px;
+.logo-container { display: flex; justify-content: center; margin-bottom: 2rem; }
+.bitcoin-icon { width: 85px; filter: drop-shadow(0 0 30px rgba(247, 147, 26, 0.4)); }
+
+.display-section { text-align: center; margin-bottom: 2.5rem; }
+.meta-label { font-size: 0.8rem; color: #64748b; font-weight: 700; text-transform: uppercase; }
+
+.pnl-badge {
+    display: inline-block;
+    padding: 8px 24px;
+    border-radius: 100px;
+    font-size: 0.95rem;
+    font-weight: 900;
 }
+.profit { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+.loss { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+
+.input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+.input-group label { display: block; font-size: 0.65rem; color: #64748b; font-weight: 800; margin-bottom: 6px; }
 
 input, select {
     width: 100%;
-    background: #030712;
+    background: #020617;
     border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 12px;
+    padding: 16px;
+    border-radius: 20px;
     color: white;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.85rem;
-    box-sizing: border-box;
+    font-weight: 600;
+    transition: 0.3s;
 }
 
-input:focus { border-color: var(--accent); outline: none; }
+input:focus { border-color: var(--sky); outline: none; }
 
-.primary-btn {
+.sync-btn {
     width: 100%;
-    background: var(--accent);
-    color: var(--bg);
+    background: var(--sky);
+    color: #020617;
     border: none;
-    border-radius: 12px;
-    padding: 14px;
-    font-weight: 800;
-    margin-top: 15px;
+    padding: 18px;
+    border-radius: 20px;
+    font-weight: 900;
+    margin-top: 20px;
     cursor: pointer;
-    transition: 0.2s;
 }
 
-.primary-btn:hover { opacity: 0.9; transform: translateY(-2px); }
-
-.asset-footer {
-    margin-top: 2rem;
+.market-info {
+    margin-top: 3rem;
+    padding-top: 2rem;
     border-top: 1px solid var(--border);
-    padding-top: 1.5rem;
-}
-
-.asset-pill {
-    background: #030712;
-    padding: 12px 20px;
-    border-radius: 16px;
-    display: flex;
-    justify-content: space-between;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.75rem;
+    display: flex; justify-content: space-between;
+    font-size: 0.8rem; color: #64748b;
 }
 
 @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.2; } 100% { opacity: 1; } }
