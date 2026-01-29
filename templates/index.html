@@ -3,29 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <title>AssetArc | Dashboard</title>
+    <title>AssetArc | Wealth Terminal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
-    <div class="dashboard">
-        <span class="logo">AssetArc</span>
-        
-        <div class="balance-label">Current Net Worth</div>
-        <div class="total-ksh">KSh {{ "{:,.2f}".format(total_ksh) }}</div>
-        <div class="status-badge {{ 'profit' if profit_loss >= 0 else 'loss' }}">
-    {{ '+' if profit_loss >= 0 }}{{ "{:,.2f}".format(profit_loss) }} KSh
-</div>
-        <div class="asset-row">
-            <div class="btc-info">
-                <div class="pulse"></div>
-                <span style="color: var(--btc-orange); font-weight: 600;">BTC</span>
+    <main class="terminal-container">
+        <header class="top-bar">
+            <span class="brand">AssetArc <span class="version">v2.0</span></span>
+            <div class="live-status">
+                <div class="pulse-dot"></div>
+                LIVE FEED
             </div>
-            <div class="price-text">
-                {{ btc_balance }} BTC @ {{ "{:,.0f}".format(current_price_ksh) }}
+        </header>
+
+        <section class="balance-section">
+            <p class="label">Total Portfolio Value</p>
+            <h1 class="main-balance">{{ symbol }} {{ "{:,.2f}".format(total_value) }}</h1>
+            <div class="badge {{ 'profit' if profit_loss >= 0 else 'loss' }}">
+                {{ '+' if profit_loss >= 0 }}{{ "{:,.2f}".format(profit_loss) }} {{ symbol }}
             </div>
-        </div>
-    </div>
+        </section>
+
+        <section class="controls">
+            <form method="POST" id="main-form">
+                <div class="input-grid">
+                    <div class="field">
+                        <label>BTC BALANCE</label>
+                        <input type="number" step="any" name="btc_amount" value="{{ btc_balance }}">
+                    </div>
+                    <div class="field">
+                        <label>BUY PRICE (KSH)</label>
+                        <input type="number" name="buy_price" value="{{ buy_price_ksh }}">
+                    </div>
+                </div>
+
+                <div class="currency-toggle">
+                    <select name="currency" onchange="this.form.submit()">
+                        <option value="KSH" {{ 'selected' if currency == 'KSH' }}>KES</option>
+                        <option value="USD" {{ 'selected' if currency == 'USD' }}>USD</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="primary-btn">SYNC PORTFOLIO</button>
+            </form>
+        </section>
+
+        <footer class="asset-footer">
+            <div class="asset-pill">
+                <span class="ticker">BTC/{{ currency }}</span>
+                <span class="price">{{ symbol }} {{ "{:,.0f}".format(current_price) }}</span>
+            </div>
+        </footer>
+    </main>
 
 </body>
 </html>
