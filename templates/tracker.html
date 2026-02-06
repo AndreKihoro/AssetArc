@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AssetArc | Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="screen-header">
+        <a href="/" class="global-brand">← ASSETARC</a>
+    </header>
+
+    <div class="dashboard-card">
+        <p style="color: var(--text-dim); margin: 0;">Total Portfolio Value</p>
+        <h1 class="balance-text">${{ "%.2f"|format(total_value) }}</h1>
+        <p class="update-tag">Last updated at {{ last_updated }} EAT</p>
+
+        <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 20px 0;">
+
+        <form action="/tracker?type={{ asset_type }}" method="POST">
+            <div class="input-group">
+                <label>ASSET</label>
+                <select name="asset_id">
+                    {% for id, name in assets.items() %}
+                        <option value="{{ id }}" {{ 'selected' if selected_asset == id }}>{{ name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="input-group" style="margin-top: 15px;">
+                <label>QUANTITY</label>
+                <input type="number" step="any" name="qty" value="{{ qty }}">
+            </div>
+
+            <button type="submit" class="sync-btn">SYNC DATA</button>
+        </form>
+    </div>
+</body>
+</html>

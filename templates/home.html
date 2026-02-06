@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AssetArc | Portal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="home-bg">
+    <header class="screen-header">
+        <span class="global-brand">AssetArc</span>
+    </header>
+
+    <div class="portal-container">
+        <h1>CHOOSE YOUR MARKET</h1>
+        <div class="portal-grid">
+            <a href="/tracker?type=crypto" class="portal-card">
+                <div class="icon">₿</div>
+                <h2>CRYPTO</h2>
+            </a>
+            <a href="/tracker?type=stocks" class="portal-card">
+                <div class="icon">📈</div>
+                <h2>STOCKS</h2>
+            </a>
+        </div>
+    </div>
+</body>
+</html>
