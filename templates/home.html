@@ -11,19 +11,19 @@
         <a href="/" class="global-brand" style="text-decoration: none;">ASSETARC</a>
         <nav class="nav-links">
             <div class="dropdown">
-                <button class="dropbtn">CRYPTO ↓</button>
+                <button class="dropbtn">CRYPTO</button>
                 <div class="dropdown-content">
                     <a href="/tracker?type=crypto&asset=bitcoin">₿ Bitcoin</a>
                     <a href="/tracker?type=crypto&asset=ethereum">Ξ Ethereum</a>
                 </div>
             </div>
             <div class="dropdown">
-                <button class="dropbtn">STOCKS ↓</button>
+                <button class="dropbtn">STOCKS</button>
                 <div class="dropdown-content">
-                    <a href="/tracker?type=stock&asset=aapl">AAPL</a>
-                    <a href="/tracker?type=stock&asset=googl">GOOGL</a>
-                    <a href="/tracker?type=stock&asset=msft">MSFT</a>
-                    <a href="/tracker?type=stock&asset=tsla">TSLA</a>
+                    <a href="/tracker?type=stock&asset=aapl">🍎 AAPL</a>
+                    <a href="/tracker?type=stock&asset=googl">🔍 GOOGL</a>
+                    <a href="/tracker?type=stock&asset=msft">💻 MSFT</a>
+                    <a href="/tracker?type=stock&asset=tsla">⚡ TSLA</a>
                 </div>
             </div>
         </nav>
@@ -35,12 +35,12 @@
             <canvas id="cryptoChart"></canvas>
         </div>
         <div class="chart-container">
-            <h3>Stocks (AAPL)</h3>
-            <canvas id="stockChart"></canvas>
-        </div>
-        <div class="chart-container">
             <h3>Crypto (Ethereum)</h3>
             <canvas id="ethereumChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <h3>Stocks (AAPL)</h3>
+            <canvas id="stockChart"></canvas>
         </div>
         <div class="chart-container">
             <h3>Stocks (GOOGL)</h3>
@@ -132,7 +132,9 @@
                                 backgroundColor: 'rgba(16, 185, 129, 0.1)',
                                 borderWidth: 2,
                                 fill: true,
-                                tension: 0.4
+                                tension: 0.4,
+                                pointRadius: 0,
+                                pointHoverRadius: 0
                             }]
                         },
                         options: {
@@ -236,7 +238,9 @@
                                 backgroundColor: 'rgba(245, 158, 11, 0.1)',
                                 borderWidth: 2,
                                 fill: true,
-                                tension: 0.4
+                                tension: 0.4,
+                                pointRadius: 0,
+                                pointHoverRadius: 0
                             }]
                         },
                         options: {
@@ -287,7 +291,9 @@
                                 backgroundColor: 'rgba(6, 182, 212, 0.1)',
                                 borderWidth: 2,
                                 fill: true,
-                                tension: 0.4
+                                tension: 0.4,
+                                pointRadius: 0,
+                                pointHoverRadius: 0
                             }]
                         },
                         options: {
@@ -338,7 +344,9 @@
                                 backgroundColor: 'rgba(236, 72, 153, 0.1)',
                                 borderWidth: 2,
                                 fill: true,
-                                tension: 0.4
+                                tension: 0.4,
+                                pointRadius: 0,
+                                pointHoverRadius: 0
                             }]
                         },
                         options: {
