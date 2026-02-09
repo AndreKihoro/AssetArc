@@ -8,45 +8,45 @@
 <body>
     <header class="screen-header">
         <a href="/" class="global-brand" style="text-decoration: none;">← ASSETARC</a>
+        <nav class="nav-links">
+            <div class="dropdown">
+                <button class="dropbtn">CRYPTO ↓</button>
+                <div class="dropdown-content">
+                    <a href="/tracker?type=crypto&asset=bitcoin">₿ Bitcoin</a>
+                    <a href="/tracker?type=crypto&asset=ethereum">Ξ Ethereum</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <button class="dropbtn">STOCKS ↓</button>
+                <div class="dropdown-content">
+                    <a href="/tracker?type=stocks&asset=AAPL">🍎 Apple</a>
+                    <a href="/tracker?type=stocks&asset=NVDA">⚡ NVIDIA</a>
+                </div>
+            </div>
+        </nav>
     </header>
 
-    <div class="dashboard-card">
-        <div class="card-top" style="display: flex; justify-content: space-between; align-items: center;">
-            <span class="status-indicator">
-                <span class="pulse"></span> LIVE {{ asset_type|upper }}
-            </span>
+    <div class="dashboard-card" style="margin-top: 120px;">
+        <div class="card-top">
+            <span class="status-indicator"><span class="pulse"></span> LIVE {{ asset_type|upper }}</span>
         </div>
 
         <div class="display-section" style="text-align: center; margin: 2rem 0;">
-            <p style="color: #64748b; font-size: 0.8rem; font-weight: 700;">NET VALUATION</p>
+            <p style="color: #64748b; font-size: 0.7rem; font-weight: 700;">TOTAL VALUATION</p>
             <h1 class="balance-text">{{ symbol }}{{ "%.2f"|format(total_value) }}</h1>
-            
             <div class="pnl-badge {{ 'profit' if profit_loss >= 0 else 'loss' }}">
                 {{ '+' if profit_loss >= 0 }}{{ "%.2f"|format(profit_loss) }} {{ symbol }}
             </div>
         </div>
 
         <form action="/tracker?type={{ asset_type }}" method="POST">
+            <input type="hidden" name="asset_id" value="{{ selected_asset }}">
             <div class="input-group">
-                <label>INSTRUMENT</label>
-                <select name="asset_id">
-                    {% for id, name in assets.items() %}
-                        <option value="{{ id }}" {{ 'selected' if selected_asset == id }}>{{ name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-
-            <div class="input-group" style="margin-top: 1.5rem;">
-                <label>HOLDING QUANTITY</label>
+                <label>MODIFY QUANTITY ({{ selected_asset|upper }})</label>
                 <input type="number" step="any" name="qty" value="{{ qty }}">
             </div>
-
-            <button type="submit" class="sync-btn">SYNC PORTFOLIO</button>
+            <button type="submit" class="sync-btn">UPDATE PORTFOLIO</button>
         </form>
-        
-        <p style="text-align: center; font-size: 0.65rem; color: #475569; margin-top: 2rem;">
-            TERMINAL REFRESSED AT {{ last_updated }} EAT
-        </p>
     </div>
 </body>
 </html>

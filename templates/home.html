@@ -2,26 +2,380 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>AssetArc | Portal</title>
+    <title>AssetArc | Dashboard</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body class="home-bg">
+<body>
     <header class="screen-header">
-        <span class="global-brand">AssetArc</span>
+        <a href="/" class="global-brand" style="text-decoration: none;">ASSETARC</a>
+        <nav class="nav-links">
+            <div class="dropdown">
+                <button class="dropbtn">CRYPTO ↓</button>
+                <div class="dropdown-content">
+                    <a href="/tracker?type=crypto&asset=bitcoin">₿ Bitcoin</a>
+                    <a href="/tracker?type=crypto&asset=ethereum">Ξ Ethereum</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <button class="dropbtn">STOCKS ↓</button>
+                <div class="dropdown-content">
+                    <a href="/tracker?type=stock&asset=aapl">AAPL</a>
+                    <a href="/tracker?type=stock&asset=googl">GOOGL</a>
+                    <a href="/tracker?type=stock&asset=msft">MSFT</a>
+                    <a href="/tracker?type=stock&asset=tsla">TSLA</a>
+                </div>
+            </div>
+        </nav>
     </header>
 
-    <div class="portal-container">
-        <h1 style="letter-spacing: 10px; font-weight: 200; margin-bottom: 3rem;">SELECT DOMAIN</h1>
-        <div class="portal-grid" style="display: flex; gap: 20px;">
-            <a href="/tracker?type=crypto" class="dashboard-card" style="text-decoration: none; text-align: center; width: 200px;">
-                <div style="font-size: 3rem; margin-bottom: 1rem;">₿</div>
-                <h2>CRYPTO</h2>
-            </a>
-            <a href="/tracker?type=stocks" class="dashboard-card" style="text-decoration: none; text-align: center; width: 200px;">
-                <div style="font-size: 3rem; margin-bottom: 1rem;">📈</div>
-                <h2>STOCKS</h2>
-            </a>
+    <div class="home-content">
+        <div class="chart-container">
+            <h3>Crypto (Bitcoin)</h3>
+            <canvas id="cryptoChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <h3>Stocks (AAPL)</h3>
+            <canvas id="stockChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <h3>Crypto (Ethereum)</h3>
+            <canvas id="ethereumChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <h3>Stocks (GOOGL)</h3>
+            <canvas id="googlChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <h3>Stocks (MSFT)</h3>
+            <canvas id="msftChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <h3>Stocks (TSLA)</h3>
+            <canvas id="tslaChart"></canvas>
         </div>
     </div>
+
+    <script>
+        // Fetch and render crypto chart
+        async function loadCryptoChart() {
+            try {
+                const response = await fetch('/chart-data/crypto/bitcoin');
+                const data = await response.json();
+                
+                if (data.prices) {
+                    const labels = data.prices.map(p => new Date(p[0]).toLocaleDateString());
+                    const prices = data.prices.map(p => p[1]);
+                    
+                    const ctx = document.getElementById('cryptoChart').getContext('2d');
+                    new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Bitcoin Price (USD)',
+                                data: prices,
+                                borderColor: '#38bdf8',
+                                backgroundColor: 'rgba(56, 189, 248, 0.1)',
+                                borderWidth: 1,
+                                fill: true,
+                                tension: 0.4,
+                                pointRadius: 0,
+                                pointHoverRadius: 0
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    labels: { color: '#94a3b8' }
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    ticks: { color: '#64748b' },
+                                    grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                                },
+                                x: {
+                                    ticks: { color: '#64748b' },
+                                    grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                                }
+                            }
+                        }
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading crypto chart:', error);
+            }
+        }
+
+        // Fetch and render stock chart
+        async function loadStockChart() {
+            try {
+                const response = await fetch('/chart-data/stock/AAPL');
+                const data = await response.json();
+                
+                if (data.prices) {
+                    const labels = data.prices.map(p => new Date(p[0]).toLocaleDateString());
+                    const prices = data.prices.map(p => p[1]);
+                    
+                    const ctx = document.getElementById('stockChart').getContext('2d');
+                    new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Apple Stock Price (USD)',
+                                data: prices,
+                                borderColor: '#10b981',
+                                backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                                borderWidth: 2,
+                                fill: true,
+                                tension: 0.4
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    labels: { color: '#94a3b8' }
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    ticks: { color: '#64748b' },
+                                    grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                                },
+                                x: {
+                                    ticks: { color: '#64748b' },
+                                    grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                                }
+                            }
+                        }
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading stock chart:', error);
+            }
+        }
+
+        // Fetch and render ethereum chart
+        async function loadEthereumChart() {
+            try {
+                const response = await fetch('/chart-data/crypto/ethereum');
+                const data = await response.json();
+                
+                if (data.prices) {
+                    const labels = data.prices.map(p => new Date(p[0]).toLocaleDateString());
+                    const prices = data.prices.map(p => p[1]);
+                    
+                    const ctx = document.getElementById('ethereumChart').getContext('2d');
+                    new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Ethereum Price (USD)',
+                                data: prices,
+                                borderColor: '#8b5cf6',
+                                backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                                borderWidth: 1,
+                                fill: true,
+                                tension: 0.4,
+                                pointRadius: 0,
+                                pointHoverRadius: 0
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    labels: { color: '#94a3b8' }
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    ticks: { color: '#64748b' },
+                                    grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                                },
+                                x: {
+                                    ticks: { color: '#64748b' },
+                                    grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                                }
+                            }
+                        }
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading ethereum chart:', error);
+            }
+        }
+
+        // Fetch and render GOOGL chart
+        async function loadGooglChart() {
+            try {
+                const response = await fetch('/chart-data/stock/GOOGL');
+                const data = await response.json();
+                
+                if (data.prices) {
+                    const labels = data.prices.map(p => new Date(p[0]).toLocaleDateString());
+                    const prices = data.prices.map(p => p[1]);
+                    
+                    const ctx = document.getElementById('googlChart').getContext('2d');
+                    new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Google Stock Price (USD)',
+                                data: prices,
+                                borderColor: '#f59e0b',
+                                backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                                borderWidth: 2,
+                                fill: true,
+                                tension: 0.4
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    labels: { color: '#94a3b8' }
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    ticks: { color: '#64748b' },
+                                    grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                                },
+                                x: {
+                                    ticks: { color: '#64748b' },
+                                    grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                                }
+                            }
+                        }
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading GOOGL chart:', error);
+            }
+        }
+
+        // Fetch and render MSFT chart
+        async function loadMsftChart() {
+            try {
+                const response = await fetch('/chart-data/stock/MSFT');
+                const data = await response.json();
+                
+                if (data.prices) {
+                    const labels = data.prices.map(p => new Date(p[0]).toLocaleDateString());
+                    const prices = data.prices.map(p => p[1]);
+                    
+                    const ctx = document.getElementById('msftChart').getContext('2d');
+                    new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Microsoft Stock Price (USD)',
+                                data: prices,
+                                borderColor: '#06b6d4',
+                                backgroundColor: 'rgba(6, 182, 212, 0.1)',
+                                borderWidth: 2,
+                                fill: true,
+                                tension: 0.4
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    labels: { color: '#94a3b8' }
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    ticks: { color: '#64748b' },
+                                    grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                                },
+                                x: {
+                                    ticks: { color: '#64748b' },
+                                    grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                                }
+                            }
+                        }
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading MSFT chart:', error);
+            }
+        }
+
+        // Fetch and render TSLA chart
+        async function loadTslaChart() {
+            try {
+                const response = await fetch('/chart-data/stock/TSLA');
+                const data = await response.json();
+                
+                if (data.prices) {
+                    const labels = data.prices.map(p => new Date(p[0]).toLocaleDateString());
+                    const prices = data.prices.map(p => p[1]);
+                    
+                    const ctx = document.getElementById('tslaChart').getContext('2d');
+                    new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Tesla Stock Price (USD)',
+                                data: prices,
+                                borderColor: '#ec4899',
+                                backgroundColor: 'rgba(236, 72, 153, 0.1)',
+                                borderWidth: 2,
+                                fill: true,
+                                tension: 0.4
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    labels: { color: '#94a3b8' }
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    ticks: { color: '#64748b' },
+                                    grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                                },
+                                x: {
+                                    ticks: { color: '#64748b' },
+                                    grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                                }
+                            }
+                        }
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading TSLA chart:', error);
+            }
+        }
+
+        // Load charts on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadCryptoChart();
+            loadStockChart();
+            loadEthereumChart();
+            loadGooglChart();
+            loadMsftChart();
+            loadTslaChart();
+        });
+    </script>
 </body>
 </html>
