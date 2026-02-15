@@ -5,11 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AssetArc | Wealth Terminal</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .nav-menu { display: flex; gap: 20px; }
+        .dropdown { position: relative; display: inline-block; }
+        .dropbtn { background: none; border: none; color: #e2e8f0; font-size: 1rem; font-weight: 600; cursor: pointer; padding: 10px; }
+        .dropdown-content { display: none; position: absolute; right: 0; background-color: #1e293b; min-width: 180px; box-shadow: 0 8px 16px rgba(0,0,0,0.2); border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); z-index: 100; }
+        .dropdown-content a { color: #cbd5e1; padding: 12px 16px; text-decoration: none; display: block; font-size: 0.9rem; }
+        .dropdown-content a:hover { background-color: #334155; color: #fff; }
+        .dropdown:hover .dropdown-content { display: block; }
+        .screen-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; }
+        .asset-icon { width: 20px; height: 20px; vertical-align: middle; margin-right: 8px; border-radius: 50%; }
+    </style>
 </head>
 <body>
 
     <header class="screen-header">
-        <span class="global-brand">AssetArc</span>
+        <a href="/" class="logo-link"><img src="{{ url_for('static', filename='logo.png') }}" alt="AssetArc Logo" class="global-brand" style="border: none; outline: none; box-shadow: none;"></a>
+        <nav class="nav-menu">
+            <div class="dropdown">
+                <button class="dropbtn">Crypto ▾</button>
+                <div class="dropdown-content">
+                    <a href="/crypto?asset=bitcoin"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bitcoin.svg/64px-Bitcoin.svg.png" class="asset-icon" alt="BTC">Bitcoin (BTC)</a>
+                    <a href="/crypto?asset=ethereum"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Ethereum_logo_2014.svg/64px-Ethereum_logo_2014.svg.png" class="asset-icon" alt="ETH">Ethereum (ETH)</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <button class="dropbtn">Stocks ▾</button>
+                <div class="dropdown-content">
+                    <a href="/stocks?asset=gold"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Gold_bullion_flat.svg/64px-Gold_bullion_flat.svg.png" class="asset-icon" alt="Gold">Gold</a>
+                    <a href="/stocks?asset=oil"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/OPEC_Logo.svg/64px-OPEC_Logo.svg.png" class="asset-icon" alt="Oil">Oil</a>
+                    <a href="/stocks?asset=AAPL"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Apple_logo_white.svg/64px-Apple_logo_white.svg.png" class="asset-icon" alt="AAPL">Apple</a>
+                    <a href="/stocks?asset=TSLA"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Tesla_logo.png/64px-Tesla_logo.png" class="asset-icon" alt="TSLA">Tesla</a>
+                </div>
+            </div>
+        </nav>
     </header>
 
     <main class="dashboard-card">
@@ -50,7 +80,7 @@
             
             <div class="input-group" style="margin-top: 15px;">
                 <label>ACTIVE CURRENCY</label>
-                <select name="currency" onchange="this.form.submit()">
+                <select name="currency" id="currencySelect" onchange="this.form.submit()">
                     {% for curr in currencies %}
                         <option value="{{ curr }}" {{ 'selected' if currency == curr }}>{{ curr }}</option>
                     {% endfor %}
@@ -65,6 +95,103 @@
             <strong>{{ symbol }}{{ "{:,.0f}".format(current_price) }}</strong>
         </footer>
     </main>
+
+    <div class="chart-container">
+        <div class="chart-header">
+            <h3>30-Day Price Chart</h3>
+            <div class="chart-controls">
+                <button class="chart-btn" data-days="7">7D</button>
+                <button class="chart-btn" data-days="30">30D</button>
+                <button class="chart-btn" data-days="90">90D</button>
+            </div>
+        </div>
+        <canvas id="priceChart"></canvas>
+    </div>
+
+    <script>
+        let chartInstance = null;
+
+        function loadChart(days = '30') {
+            const currency = document.getElementById('currencySelect').value.toLowerCase();
+            const url = `/chart-data/btc?currency=${currency}&days=${days}`;
+            
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.prices) {
+                        renderChart(data.prices, currency);
+                    }
+                })
+                .catch(error => console.error('Error loading chart:', error));
+        }
+
+        function renderChart(prices, currency) {
+            const ctx = document.getElementById('priceChart');
+            
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+
+            const labels = prices.map(p => {
+                const date = new Date(p[0]);
+                return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            });
+            const data = prices.map(p => p[1]);
+
+            chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: `Bitcoin Price (${currency.toUpperCase()})`,
+                        data: data,
+                        borderColor: '#38bdf8',
+                        backgroundColor: 'rgba(56, 189, 248, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 3,
+                        pointBackgroundColor: '#38bdf8',
+                        pointBorderColor: '#020617',
+                        pointBorderWidth: 2,
+                        pointHoverRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            labels: { color: '#d1d5db' }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            ticks: { color: '#94a3b8' },
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                        },
+                        x: {
+                            ticks: { color: '#94a3b8' },
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                        }
+                    }
+                }
+            });
+        }
+
+        document.querySelectorAll('.chart-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.chart-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                loadChart(e.target.dataset.days);
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelector('[data-days="30"]').classList.add('active');
+            loadChart('30');
+        });
+    </script>
 
 </body>
 </html>

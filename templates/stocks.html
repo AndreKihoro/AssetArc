@@ -3,46 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AssetArc | Select Market</title>
+    <title>AssetArc | Stocks</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <style>
-        .home-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 80vh;
-            gap: 2rem;
-            padding: 2rem;
-        }
-        .choice-card {
-            background: rgba(30, 41, 59, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            padding: 3rem;
-            text-align: center;
-            text-decoration: none;
-            color: #fff;
-            width: 200px;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-        .choice-card:hover {
-            transform: translateY(-5px);
-            background: rgba(30, 41, 59, 0.9);
-            border-color: #38bdf8;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
-        }
-        .choice-icon {
-            font-size: 4rem;
-            margin-bottom: 1.5rem;
-            display: block;
-        }
-        .choice-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #e2e8f0;
-        }
-        /* Dropdown Styles */
         .nav-menu { display: flex; gap: 20px; }
         .dropdown { position: relative; display: inline-block; }
         .dropbtn { background: none; border: none; color: #e2e8f0; font-size: 1rem; font-weight: 600; cursor: pointer; padding: 10px; }
@@ -77,15 +40,11 @@
         </nav>
     </header>
 
-    <main class="home-container">
-        <a href="/crypto" class="choice-card">
-            <span class="choice-icon">₿</span>
-            <div class="choice-title">Crypto</div>
-        </a>
-        <a href="/stocks" class="choice-card">
-            <span class="choice-icon">📈</span>
-            <div class="choice-title">Stocks</div>
-        </a>
+    <main class="dashboard-card" style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 400px; text-align: center;">
+        <div style="font-size: 4rem; margin-bottom: 1rem;">📈</div>
+        <h1 style="margin-bottom: 1rem;">Stock Market</h1>
+        <p style="color: #94a3b8; margin-bottom: 2rem;">Stock tracking functionality is coming soon.</p>
+        <a href="/" class="sync-btn" style="text-decoration: none; display: inline-block; width: auto; padding: 0.75rem 2rem;">Return Home</a>
     </main>
 </body>
 </html>
