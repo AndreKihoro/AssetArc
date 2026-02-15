@@ -8,6 +8,7 @@ import random
 app = Flask(__name__)
 
 # Stability configuration
+AV_API_KEY = "VBMAQLS16W4K3WPM"
 session = requests.Session()
 retries = Retry(total=3, backoff_factor=1, status_forcelist=[429, 500, 502, 503, 504])
 session.mount('https://', HTTPAdapter(max_retries=retries))

@@ -15,6 +15,24 @@
                 <div class="dropdown-content">
                     <a href="/tracker?type=crypto&asset=bitcoin">₿ Bitcoin</a>
                     <a href="/tracker?type=crypto&asset=ethereum">Ξ Ethereum</a>
+                    <a href="/tracker?type=crypto&asset=cardano">₳ Cardano</a>
+                    <a href="/tracker?type=crypto&asset=solana">◎ Solana</a>
+                    <a href="/tracker?type=crypto&asset=ripple">✕ Ripple</a>
+                    <a href="/tracker?type=crypto&asset=polkadot">● Polkadot</a>
+                    <a href="/tracker?type=crypto&asset=dogecoin">Ð Dogecoin</a>
+                    <a href="/tracker?type=crypto&asset=litecoin">Ł Litecoin</a>
+                    <a href="/tracker?type=crypto&asset=chainlink">🔗 Chainlink</a>
+                    <a href="/tracker?type=crypto&asset=bitcoincash">💰 Bitcoin Cash</a>
+                    <a href="/tracker?type=crypto&asset=binance">⧠ Binance Coin</a>
+                    <a href="/tracker?type=crypto&asset=avalanche">▲ Avalanche</a>
+                    <a href="/tracker?type=crypto&asset=polygon">◆ Polygon</a>
+                    <a href="/tracker?type=crypto&asset=vechain">⚓ VeChain</a>
+                    <a href="/tracker?type=crypto&asset=cosmos">⚛ Cosmos</a>
+                    <a href="/tracker?type=crypto&asset=uniswap">🦄 Uniswap</a>
+                    <a href="/tracker?type=crypto&asset=monero">ɱ Monero</a>
+                    <a href="/tracker?type=crypto&asset=stellar">★ Stellar</a>
+                    <a href="/tracker?type=crypto&asset=tron">🔶 Tron</a>
+                    <a href="/tracker?type=crypto&asset=zcash">ⓩ Zcash</a>
                 </div>
             </div>
             <div class="dropdown">
@@ -24,35 +42,63 @@
                     <a href="/tracker?type=stock&asset=googl">🔍 GOOGL</a>
                     <a href="/tracker?type=stock&asset=msft">💻 MSFT</a>
                     <a href="/tracker?type=stock&asset=tsla">⚡ TSLA</a>
+                    <a href="/tracker?type=stock&asset=amzn">📦 AMZN</a>
+                    <a href="/tracker?type=stock&asset=meta">👍 META</a>
+                    <a href="/tracker?type=stock&asset=nvda">🎮 NVDA</a>
+                    <a href="/tracker?type=stock&asset=jpm">🏦 JPM</a>
+                    <a href="/tracker?type=stock&asset=ibm">💡 IBM</a>
+                    <a href="/tracker?type=stock&asset=cisco">🌐 CISCO</a>
+                    <a href="/tracker?type=stock&asset=oracle">📊 ORACLE</a>
+                    <a href="/tracker?type=stock&asset=amd">🔧 AMD</a>
+                    <a href="/tracker?type=stock&asset=intel">🖥️ INTEL</a>
+                    <a href="/tracker?type=stock&asset=ba">✈️ BA</a>
+                    <a href="/tracker?type=stock&asset=cat">🏗️ CAT</a>
+                    <a href="/tracker?type=stock&asset=ge">⚙️ GE</a>
+                    <a href="/tracker?type=stock&asset=wmt">🛒 WMT</a>
+                    <a href="/tracker?type=stock&asset=hd">🏠 HD</a>
+                    <a href="/tracker?type=stock&asset=mcd">🍔 MCD</a>
+                    <a href="/tracker?type=stock&asset=nke">👟 NKE</a>
                 </div>
             </div>
         </nav>
     </header>
 
+    <aside class="search-sidebar" aria-label="Asset search">
+        <h4>Search Assets</h4>
+        <input id="assetSearch" placeholder="Search symbol or name..." aria-label="Search assets">
+        <ul id="searchResults" class="search-results" role="list"></ul>
+    </aside>
+
     <div class="home-content">
         <div class="chart-container">
             <h3>Crypto (Bitcoin)</h3>
             <canvas id="cryptoChart"></canvas>
+            <p class="chart-year" id="cryptoChartYear"></p>
         </div>
         <div class="chart-container">
             <h3>Crypto (Ethereum)</h3>
             <canvas id="ethereumChart"></canvas>
+            <p class="chart-year" id="ethereumChartYear"></p>
         </div>
         <div class="chart-container">
             <h3>Stocks (AAPL)</h3>
             <canvas id="stockChart"></canvas>
+            <p class="chart-year" id="stockChartYear"></p>
         </div>
         <div class="chart-container">
             <h3>Stocks (GOOGL)</h3>
             <canvas id="googlChart"></canvas>
+            <p class="chart-year" id="googlChartYear"></p>
         </div>
         <div class="chart-container">
             <h3>Stocks (MSFT)</h3>
             <canvas id="msftChart"></canvas>
+            <p class="chart-year" id="msftChartYear"></p>
         </div>
         <div class="chart-container">
             <h3>Stocks (TSLA)</h3>
             <canvas id="tslaChart"></canvas>
+            <p class="chart-year" id="tslaChartYear"></p>
         </div>
     </div>
 
@@ -64,7 +110,7 @@
                 const data = await response.json();
                 
                 if (data.prices) {
-                    const labels = data.prices.map(p => new Date(p[0]).toLocaleDateString());
+                    const labels = data.prices.map(p => new Date(p[0]).toLocaleString(undefined, { month: 'short' }));
                     const prices = data.prices.map(p => p[1]);
                     
                     const ctx = document.getElementById('cryptoChart').getContext('2d');
@@ -104,6 +150,8 @@
                             }
                         }
                     });
+                    // show year under the card
+                    try { document.getElementById('cryptoChartYear').textContent = new Date(data.prices[data.prices.length-1][0]).getFullYear(); } catch(e){}
                 }
             } catch (error) {
                 console.error('Error loading crypto chart:', error);
@@ -117,7 +165,7 @@
                 const data = await response.json();
                 
                 if (data.prices) {
-                    const labels = data.prices.map(p => new Date(p[0]).toLocaleDateString());
+                    const labels = data.prices.map(p => new Date(p[0]).toLocaleString(undefined, { month: 'short' }));
                     const prices = data.prices.map(p => p[1]);
                     
                     const ctx = document.getElementById('stockChart').getContext('2d');
@@ -157,6 +205,7 @@
                             }
                         }
                     });
+                    try { document.getElementById('stockChartYear').textContent = new Date(data.prices[data.prices.length-1][0]).getFullYear(); } catch(e){}
                 }
             } catch (error) {
                 console.error('Error loading stock chart:', error);
@@ -170,7 +219,7 @@
                 const data = await response.json();
                 
                 if (data.prices) {
-                    const labels = data.prices.map(p => new Date(p[0]).toLocaleDateString());
+                    const labels = data.prices.map(p => new Date(p[0]).toLocaleString(undefined, { month: 'short' }));
                     const prices = data.prices.map(p => p[1]);
                     
                     const ctx = document.getElementById('ethereumChart').getContext('2d');
@@ -210,6 +259,7 @@
                             }
                         }
                     });
+                    try { document.getElementById('ethereumChartYear').textContent = new Date(data.prices[data.prices.length-1][0]).getFullYear(); } catch(e){}
                 }
             } catch (error) {
                 console.error('Error loading ethereum chart:', error);
@@ -223,7 +273,7 @@
                 const data = await response.json();
                 
                 if (data.prices) {
-                    const labels = data.prices.map(p => new Date(p[0]).toLocaleDateString());
+                    const labels = data.prices.map(p => new Date(p[0]).toLocaleString(undefined, { month: 'short' }));
                     const prices = data.prices.map(p => p[1]);
                     
                     const ctx = document.getElementById('googlChart').getContext('2d');
@@ -263,6 +313,7 @@
                             }
                         }
                     });
+                    try { document.getElementById('googlChartYear').textContent = new Date(data.prices[data.prices.length-1][0]).getFullYear(); } catch(e){}
                 }
             } catch (error) {
                 console.error('Error loading GOOGL chart:', error);
@@ -276,7 +327,7 @@
                 const data = await response.json();
                 
                 if (data.prices) {
-                    const labels = data.prices.map(p => new Date(p[0]).toLocaleDateString());
+                    const labels = data.prices.map(p => new Date(p[0]).toLocaleString(undefined, { month: 'short' }));
                     const prices = data.prices.map(p => p[1]);
                     
                     const ctx = document.getElementById('msftChart').getContext('2d');
@@ -316,6 +367,7 @@
                             }
                         }
                     });
+                    try { document.getElementById('msftChartYear').textContent = new Date(data.prices[data.prices.length-1][0]).getFullYear(); } catch(e){}
                 }
             } catch (error) {
                 console.error('Error loading MSFT chart:', error);
@@ -329,7 +381,7 @@
                 const data = await response.json();
                 
                 if (data.prices) {
-                    const labels = data.prices.map(p => new Date(p[0]).toLocaleDateString());
+                    const labels = data.prices.map(p => new Date(p[0]).toLocaleString(undefined, { month: 'short' }));
                     const prices = data.prices.map(p => p[1]);
                     
                     const ctx = document.getElementById('tslaChart').getContext('2d');
@@ -369,6 +421,7 @@
                             }
                         }
                     });
+                    try { document.getElementById('tslaChartYear').textContent = new Date(data.prices[data.prices.length-1][0]).getFullYear(); } catch(e){}
                 }
             } catch (error) {
                 console.error('Error loading TSLA chart:', error);
@@ -383,7 +436,52 @@
             loadGooglChart();
             loadMsftChart();
             loadTslaChart();
+            initSearch();
         });
+
+        // Initialize asset search sidebar
+        function initSearch(){
+            const anchors = document.querySelectorAll('.dropdown-content a');
+            const assets = Array.from(anchors).map(a => {
+                try {
+                    const url = new URL(a.getAttribute('href'), location.origin);
+                    const params = new URLSearchParams(url.search);
+                    return {
+                        label: a.textContent.trim().replace(/^[^\s]+\s*/,'').trim(),
+                        href: a.getAttribute('href'),
+                        type: params.get('type'),
+                        asset: params.get('asset') || params.get('asset')
+                    };
+                } catch (e) {
+                    return null;
+                }
+            }).filter(Boolean);
+
+            const input = document.getElementById('assetSearch');
+            const results = document.getElementById('searchResults');
+
+            function renderMatches(q){
+                results.innerHTML = '';
+                if (!q) return;
+                const matches = assets.filter(it => {
+                    return it.label.toLowerCase().includes(q) || (it.asset && it.asset.toLowerCase().includes(q));
+                }).slice(0, 10);
+
+                matches.forEach(it => {
+                    const li = document.createElement('li');
+                    li.className = 'search-result-item';
+                    li.textContent = `${it.label} — ${it.type || ''}`.trim();
+                    li.tabIndex = 0;
+                    li.addEventListener('click', () => location.href = it.href);
+                    li.addEventListener('keydown', (e) => { if (e.key === 'Enter') location.href = it.href; });
+                    results.appendChild(li);
+                });
+            }
+
+            input.addEventListener('input', (e) => renderMatches(e.target.value.toLowerCase()));
+            input.addEventListener('focus', (e) => renderMatches(e.target.value.toLowerCase()));
+            document.addEventListener('click', (e) => { if (!e.composedPath().includes(document.querySelector('.search-sidebar'))) results.innerHTML=''; });
+        }
     </script>
 </body>
 </html>
