@@ -2,90 +2,489 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AssetArc | Select Market</title>
+    <title>AssetArc | Dashboard</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <style>
-        .home-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 80vh;
-            gap: 2rem;
-            padding: 2rem;
-        }
-        .choice-card {
-            background: rgba(30, 41, 59, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            padding: 3rem;
-            text-align: center;
-            text-decoration: none;
-            color: #fff;
-            width: 200px;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-        .choice-card:hover {
-            transform: translateY(-5px);
-            background: rgba(30, 41, 59, 0.9);
-            border-color: #38bdf8;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
-        }
-        .choice-icon {
-            font-size: 4rem;
-            margin-bottom: 1.5rem;
-            display: block;
-        }
-        .choice-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #e2e8f0;
-        }
-        /* Dropdown Styles */
-        .nav-menu { display: flex; gap: 20px; }
-        .dropdown { position: relative; display: inline-block; }
-        .dropbtn { background: none; border: none; color: #e2e8f0; font-size: 1rem; font-weight: 600; cursor: pointer; padding: 10px; }
-        .dropdown-content { display: none; position: absolute; right: 0; background-color: #1e293b; min-width: 180px; box-shadow: 0 8px 16px rgba(0,0,0,0.2); border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); z-index: 100; }
-        .dropdown-content a { color: #cbd5e1; padding: 12px 16px; text-decoration: none; display: block; font-size: 0.9rem; }
-        .dropdown-content a:hover { background-color: #334155; color: #fff; }
-        .dropdown:hover .dropdown-content { display: block; }
-        .screen-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; }
-        .asset-icon { width: 20px; height: 20px; vertical-align: middle; margin-right: 8px; border-radius: 50%; }
-    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <header class="screen-header">
-        <a href="/" class="logo-link"><img src="{{ url_for('static', filename='logo.png') }}" alt="AssetArc Logo" class="global-brand" style="border: none; outline: none; box-shadow: none;"></a>
-        <nav class="nav-menu">
+        <a href="/" class="logo-link">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="AssetArc Logo" class="logo-image">
+            <span class="global-brand" style="text-decoration: none;">ASSETARC</span>
+        </a>
+        <nav class="nav-links">
             <div class="dropdown">
-                <button class="dropbtn">Crypto ▾</button>
+                <button class="dropbtn">CRYPTO</button>
                 <div class="dropdown-content">
-                    <a href="/crypto?asset=bitcoin"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bitcoin.svg/64px-Bitcoin.svg.png" class="asset-icon" alt="BTC">Bitcoin (BTC)</a>
-                    <a href="/crypto?asset=ethereum"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Ethereum_logo_2014.svg/64px-Ethereum_logo_2014.svg.png" class="asset-icon" alt="ETH">Ethereum (ETH)</a>
+                    <a href="/tracker?type=crypto&asset=bitcoin">₿ Bitcoin</a>
+                    <a href="/tracker?type=crypto&asset=ethereum">Ξ Ethereum</a>
+                    <a href="/tracker?type=crypto&asset=cardano">₳ Cardano</a>
+                    <a href="/tracker?type=crypto&asset=solana">◎ Solana</a>
+                    <a href="/tracker?type=crypto&asset=ripple">✕ Ripple</a>
+                    <a href="/tracker?type=crypto&asset=polkadot">● Polkadot</a>
+                    <a href="/tracker?type=crypto&asset=dogecoin">Ð Dogecoin</a>
+                    <a href="/tracker?type=crypto&asset=litecoin">Ł Litecoin</a>
+                    <a href="/tracker?type=crypto&asset=chainlink">🔗 Chainlink</a>
+                    <a href="/tracker?type=crypto&asset=bitcoincash">💰 Bitcoin Cash</a>
+                    <a href="/tracker?type=crypto&asset=binance">⧠ Binance Coin</a>
+                    <a href="/tracker?type=crypto&asset=avalanche">▲ Avalanche</a>
+                    <a href="/tracker?type=crypto&asset=polygon">◆ Polygon</a>
+                    <a href="/tracker?type=crypto&asset=vechain">⚓ VeChain</a>
+                    <a href="/tracker?type=crypto&asset=cosmos">⚛ Cosmos</a>
+                    <a href="/tracker?type=crypto&asset=uniswap">🦄 Uniswap</a>
+                    <a href="/tracker?type=crypto&asset=monero">ɱ Monero</a>
+                    <a href="/tracker?type=crypto&asset=stellar">★ Stellar</a>
+                    <a href="/tracker?type=crypto&asset=tron">🔶 Tron</a>
+                    <a href="/tracker?type=crypto&asset=zcash">ⓩ Zcash</a>
                 </div>
             </div>
             <div class="dropdown">
-                <button class="dropbtn">Stocks ▾</button>
+                <button class="dropbtn">STOCKS</button>
                 <div class="dropdown-content">
-                    <a href="/stocks?asset=gold"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Gold_bullion_flat.svg/64px-Gold_bullion_flat.svg.png" class="asset-icon" alt="Gold">Gold</a>
-                    <a href="/stocks?asset=oil"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/OPEC_Logo.svg/64px-OPEC_Logo.svg.png" class="asset-icon" alt="Oil">Oil</a>
-                    <a href="/stocks?asset=AAPL"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Apple_logo_white.svg/64px-Apple_logo_white.svg.png" class="asset-icon" alt="AAPL">Apple</a>
-                    <a href="/stocks?asset=TSLA"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Tesla_logo.png/64px-Tesla_logo.png" class="asset-icon" alt="TSLA">Tesla</a>
+                    <a href="/tracker?type=stock&asset=aapl">🍎 AAPL</a>
+                    <a href="/tracker?type=stock&asset=googl">🔍 GOOGL</a>
+                    <a href="/tracker?type=stock&asset=msft">💻 MSFT</a>
+                    <a href="/tracker?type=stock&asset=tsla">⚡ TSLA</a>
+                    <a href="/tracker?type=stock&asset=amzn">📦 AMZN</a>
+                    <a href="/tracker?type=stock&asset=meta">👍 META</a>
+                    <a href="/tracker?type=stock&asset=nvda">🎮 NVDA</a>
+                    <a href="/tracker?type=stock&asset=jpm">🏦 JPM</a>
+                    <a href="/tracker?type=stock&asset=ibm">💡 IBM</a>
+                    <a href="/tracker?type=stock&asset=cisco">🌐 CISCO</a>
+                    <a href="/tracker?type=stock&asset=oracle">📊 ORACLE</a>
+                    <a href="/tracker?type=stock&asset=amd">🔧 AMD</a>
+                    <a href="/tracker?type=stock&asset=intel">🖥️ INTEL</a>
+                    <a href="/tracker?type=stock&asset=ba">✈️ BA</a>
+                    <a href="/tracker?type=stock&asset=cat">🏗️ CAT</a>
+                    <a href="/tracker?type=stock&asset=ge">⚙️ GE</a>
+                    <a href="/tracker?type=stock&asset=wmt">🛒 WMT</a>
+                    <a href="/tracker?type=stock&asset=hd">🏠 HD</a>
+                    <a href="/tracker?type=stock&asset=mcd">🍔 MCD</a>
+                    <a href="/tracker?type=stock&asset=nke">👟 NKE</a>
                 </div>
             </div>
         </nav>
     </header>
 
-    <main class="home-container">
-        <a href="/crypto" class="choice-card">
-            <span class="choice-icon">₿</span>
-            <div class="choice-title">Crypto</div>
-        </a>
-        <a href="/stocks" class="choice-card">
-            <span class="choice-icon">📈</span>
-            <div class="choice-title">Stocks</div>
-        </a>
-    </main>
+    <aside class="search-sidebar" aria-label="Asset search">
+        <h4>Search Assets</h4>
+        <input id="assetSearch" placeholder="Search symbol or name..." aria-label="Search assets">
+        <ul id="searchResults" class="search-results" role="list"></ul>
+    </aside>
+
+    <div class="home-content">
+        <div class="chart-container">
+            <h3>Crypto (Bitcoin)</h3>
+            <canvas id="cryptoChart"></canvas>
+            <p class="chart-year" id="cryptoChartYear"></p>
+        </div>
+        <div class="chart-container">
+            <h3>Crypto (Ethereum)</h3>
+            <canvas id="ethereumChart"></canvas>
+            <p class="chart-year" id="ethereumChartYear"></p>
+        </div>
+        <div class="chart-container">
+            <h3>Stocks (AAPL)</h3>
+            <canvas id="stockChart"></canvas>
+            <p class="chart-year" id="stockChartYear"></p>
+        </div>
+        <div class="chart-container">
+            <h3>Stocks (GOOGL)</h3>
+            <canvas id="googlChart"></canvas>
+            <p class="chart-year" id="googlChartYear"></p>
+        </div>
+        <div class="chart-container">
+            <h3>Stocks (MSFT)</h3>
+            <canvas id="msftChart"></canvas>
+            <p class="chart-year" id="msftChartYear"></p>
+        </div>
+        <div class="chart-container">
+            <h3>Stocks (TSLA)</h3>
+            <canvas id="tslaChart"></canvas>
+            <p class="chart-year" id="tslaChartYear"></p>
+        </div>
+    </div>
+
+    <script>
+        // Fetch and render crypto chart
+        async function loadCryptoChart() {
+            try {
+                const response = await fetch('/chart-data/crypto/bitcoin');
+                const data = await response.json();
+                
+                if (data.prices) {
+                    const labels = data.prices.map(p => new Date(p[0]).toLocaleString(undefined, { month: 'short' }));
+                    const prices = data.prices.map(p => p[1]);
+                    
+                    const ctx = document.getElementById('cryptoChart').getContext('2d');
+                    new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Bitcoin Price (USD)',
+                                data: prices,
+                                borderColor: '#38bdf8',
+                                backgroundColor: 'rgba(56, 189, 248, 0.1)',
+                                borderWidth: 1,
+                                fill: true,
+                                tension: 0.4,
+                                pointRadius: 0,
+                                pointHoverRadius: 0
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    labels: { color: '#94a3b8' }
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    ticks: { color: '#64748b' },
+                                    grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                                },
+                                x: {
+                                    ticks: { color: '#64748b' },
+                                    grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                                }
+                            }
+                        }
+                    });
+                    // show year under the card
+                    try { document.getElementById('cryptoChartYear').textContent = new Date(data.prices[data.prices.length-1][0]).getFullYear(); } catch(e){}
+                }
+            } catch (error) {
+                console.error('Error loading crypto chart:', error);
+            }
+        }
+
+        // Fetch and render stock chart
+        async function loadStockChart() {
+            try {
+                const response = await fetch('/chart-data/stock/AAPL');
+                const data = await response.json();
+                
+                if (data.prices) {
+                    const labels = data.prices.map(p => new Date(p[0]).toLocaleString(undefined, { month: 'short' }));
+                    const prices = data.prices.map(p => p[1]);
+                    
+                    const ctx = document.getElementById('stockChart').getContext('2d');
+                    new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Apple Stock Price (USD)',
+                                data: prices,
+                                borderColor: '#10b981',
+                                backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                                borderWidth: 2,
+                                fill: true,
+                                tension: 0.4,
+                                pointRadius: 0,
+                                pointHoverRadius: 0
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    labels: { color: '#94a3b8' }
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    ticks: { color: '#64748b' },
+                                    grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                                },
+                                x: {
+                                    ticks: { color: '#64748b' },
+                                    grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                                }
+                            }
+                        }
+                    });
+                    try { document.getElementById('stockChartYear').textContent = new Date(data.prices[data.prices.length-1][0]).getFullYear(); } catch(e){}
+                }
+            } catch (error) {
+                console.error('Error loading stock chart:', error);
+            }
+        }
+
+        // Fetch and render ethereum chart
+        async function loadEthereumChart() {
+            try {
+                const response = await fetch('/chart-data/crypto/ethereum');
+                const data = await response.json();
+                
+                if (data.prices) {
+                    const labels = data.prices.map(p => new Date(p[0]).toLocaleString(undefined, { month: 'short' }));
+                    const prices = data.prices.map(p => p[1]);
+                    
+                    const ctx = document.getElementById('ethereumChart').getContext('2d');
+                    new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Ethereum Price (USD)',
+                                data: prices,
+                                borderColor: '#8b5cf6',
+                                backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                                borderWidth: 1,
+                                fill: true,
+                                tension: 0.4,
+                                pointRadius: 0,
+                                pointHoverRadius: 0
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    labels: { color: '#94a3b8' }
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    ticks: { color: '#64748b' },
+                                    grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                                },
+                                x: {
+                                    ticks: { color: '#64748b' },
+                                    grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                                }
+                            }
+                        }
+                    });
+                    try { document.getElementById('ethereumChartYear').textContent = new Date(data.prices[data.prices.length-1][0]).getFullYear(); } catch(e){}
+                }
+            } catch (error) {
+                console.error('Error loading ethereum chart:', error);
+            }
+        }
+
+        // Fetch and render GOOGL chart
+        async function loadGooglChart() {
+            try {
+                const response = await fetch('/chart-data/stock/GOOGL');
+                const data = await response.json();
+                
+                if (data.prices) {
+                    const labels = data.prices.map(p => new Date(p[0]).toLocaleString(undefined, { month: 'short' }));
+                    const prices = data.prices.map(p => p[1]);
+                    
+                    const ctx = document.getElementById('googlChart').getContext('2d');
+                    new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Google Stock Price (USD)',
+                                data: prices,
+                                borderColor: '#f59e0b',
+                                backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                                borderWidth: 2,
+                                fill: true,
+                                tension: 0.4,
+                                pointRadius: 0,
+                                pointHoverRadius: 0
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    labels: { color: '#94a3b8' }
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    ticks: { color: '#64748b' },
+                                    grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                                },
+                                x: {
+                                    ticks: { color: '#64748b' },
+                                    grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                                }
+                            }
+                        }
+                    });
+                    try { document.getElementById('googlChartYear').textContent = new Date(data.prices[data.prices.length-1][0]).getFullYear(); } catch(e){}
+                }
+            } catch (error) {
+                console.error('Error loading GOOGL chart:', error);
+            }
+        }
+
+        // Fetch and render MSFT chart
+        async function loadMsftChart() {
+            try {
+                const response = await fetch('/chart-data/stock/MSFT');
+                const data = await response.json();
+                
+                if (data.prices) {
+                    const labels = data.prices.map(p => new Date(p[0]).toLocaleString(undefined, { month: 'short' }));
+                    const prices = data.prices.map(p => p[1]);
+                    
+                    const ctx = document.getElementById('msftChart').getContext('2d');
+                    new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Microsoft Stock Price (USD)',
+                                data: prices,
+                                borderColor: '#06b6d4',
+                                backgroundColor: 'rgba(6, 182, 212, 0.1)',
+                                borderWidth: 2,
+                                fill: true,
+                                tension: 0.4,
+                                pointRadius: 0,
+                                pointHoverRadius: 0
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    labels: { color: '#94a3b8' }
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    ticks: { color: '#64748b' },
+                                    grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                                },
+                                x: {
+                                    ticks: { color: '#64748b' },
+                                    grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                                }
+                            }
+                        }
+                    });
+                    try { document.getElementById('msftChartYear').textContent = new Date(data.prices[data.prices.length-1][0]).getFullYear(); } catch(e){}
+                }
+            } catch (error) {
+                console.error('Error loading MSFT chart:', error);
+            }
+        }
+
+        // Fetch and render TSLA chart
+        async function loadTslaChart() {
+            try {
+                const response = await fetch('/chart-data/stock/TSLA');
+                const data = await response.json();
+                
+                if (data.prices) {
+                    const labels = data.prices.map(p => new Date(p[0]).toLocaleString(undefined, { month: 'short' }));
+                    const prices = data.prices.map(p => p[1]);
+                    
+                    const ctx = document.getElementById('tslaChart').getContext('2d');
+                    new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Tesla Stock Price (USD)',
+                                data: prices,
+                                borderColor: '#ec4899',
+                                backgroundColor: 'rgba(236, 72, 153, 0.1)',
+                                borderWidth: 2,
+                                fill: true,
+                                tension: 0.4,
+                                pointRadius: 0,
+                                pointHoverRadius: 0
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    labels: { color: '#94a3b8' }
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    ticks: { color: '#64748b' },
+                                    grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                                },
+                                x: {
+                                    ticks: { color: '#64748b' },
+                                    grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                                }
+                            }
+                        }
+                    });
+                    try { document.getElementById('tslaChartYear').textContent = new Date(data.prices[data.prices.length-1][0]).getFullYear(); } catch(e){}
+                }
+            } catch (error) {
+                console.error('Error loading TSLA chart:', error);
+            }
+        }
+
+        // Load charts on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadCryptoChart();
+            loadStockChart();
+            loadEthereumChart();
+            loadGooglChart();
+            loadMsftChart();
+            loadTslaChart();
+            initSearch();
+        });
+
+        // Initialize asset search sidebar
+        function initSearch(){
+            const anchors = document.querySelectorAll('.dropdown-content a');
+            const assets = Array.from(anchors).map(a => {
+                try {
+                    const url = new URL(a.getAttribute('href'), location.origin);
+                    const params = new URLSearchParams(url.search);
+                    return {
+                        label: a.textContent.trim().replace(/^[^\s]+\s*/,'').trim(),
+                        href: a.getAttribute('href'),
+                        type: params.get('type'),
+                        asset: params.get('asset') || params.get('asset')
+                    };
+                } catch (e) {
+                    return null;
+                }
+            }).filter(Boolean);
+
+            const input = document.getElementById('assetSearch');
+            const results = document.getElementById('searchResults');
+
+            function renderMatches(q){
+                results.innerHTML = '';
+                if (!q) return;
+                const matches = assets.filter(it => {
+                    return it.label.toLowerCase().includes(q) || (it.asset && it.asset.toLowerCase().includes(q));
+                }).slice(0, 10);
+
+                matches.forEach(it => {
+                    const li = document.createElement('li');
+                    li.className = 'search-result-item';
+                    li.textContent = `${it.label} — ${it.type || ''}`.trim();
+                    li.tabIndex = 0;
+                    li.addEventListener('click', () => location.href = it.href);
+                    li.addEventListener('keydown', (e) => { if (e.key === 'Enter') location.href = it.href; });
+                    results.appendChild(li);
+                });
+            }
+
+            input.addEventListener('input', (e) => renderMatches(e.target.value.toLowerCase()));
+            input.addEventListener('focus', (e) => renderMatches(e.target.value.toLowerCase()));
+            document.addEventListener('click', (e) => { if (!e.composedPath().includes(document.querySelector('.search-sidebar'))) results.innerHTML=''; });
+        }
+    </script>
 </body>
 </html>
