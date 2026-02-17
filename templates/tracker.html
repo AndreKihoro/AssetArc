@@ -8,8 +8,7 @@
 <body>
     <header class="screen-header">
         <a href="/" class="logo-link">
-            <img src="{{ url_for('static', filename='logo.png') }}" alt="AssetArc Logo" class="logo-image">
-            <span class="global-brand" style="text-decoration: none;">← ASSETARC</span>
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="AssetArc Logo" class="logo-image" aria-label="AssetArc logo">
         </a>
         <nav class="nav-links">
             <div class="dropdown">
@@ -17,13 +16,27 @@
                 <div class="dropdown-content">
                     <a href="/tracker?type=crypto&asset=bitcoin">₿ Bitcoin</a>
                     <a href="/tracker?type=crypto&asset=ethereum">Ξ Ethereum</a>
+                    <a href="/tracker?type=crypto&asset=cardano">₳ Cardano</a>
+                    <a href="/tracker?type=crypto&asset=solana">◎ Solana</a>
+                    <a href="/tracker?type=crypto&asset=ripple">✕ Ripple</a>
+                    <a href="/tracker?type=crypto&asset=polkadot">● Polkadot</a>
+                    <a href="/tracker?type=crypto&asset=dogecoin">Ð Dogecoin</a>
+                    <a href="/tracker?type=crypto&asset=litecoin">Ł Litecoin</a>
+                    <a href="/tracker?type=crypto&asset=chainlink">🔗 Chainlink</a>
+                    <a href="/tracker?type=crypto&asset=bitcoincash">💰 Bitcoin Cash</a>
+                    <a href="/tracker?type=crypto&asset=binance">⧠ Binance Coin</a>
+                    <a href="/tracker?type=crypto&asset=avalanche">▲ Avalanche</a>
+                    <a href="/tracker?type=crypto&asset=polygon">◆ Polygon</a>
                 </div>
             </div>
             <div class="dropdown">
                 <button class="dropbtn">STOCKS ↓</button>
                 <div class="dropdown-content">
                     <a href="/tracker?type=stocks&asset=AAPL">🍎 Apple</a>
-                    <a href="/tracker?type=stocks&asset=NVDA">⚡ NVIDIA</a>
+                    <a href="/tracker?type=stocks&asset=GOOGL">🔍 Google</a>
+                    <a href="/tracker?type=stocks&asset=MSFT">💻 Microsoft</a>
+                    <a href="/tracker?type=stocks&asset=TSLA">⚡ Tesla</a>
+                    <a href="/tracker?type=stocks&asset=NVDA">🎮 NVIDIA</a>
                 </div>
             </div>
         </nav>

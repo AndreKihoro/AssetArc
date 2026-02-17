@@ -1,4 +1,5 @@
 flask
 requests
-yfinance
-gunicorn
+redis
+APScheduler
+python-dotenv

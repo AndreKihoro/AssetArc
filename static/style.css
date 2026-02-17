@@ -44,10 +44,12 @@ body {
 }
 
 .logo-image {
-    height: 40px;
-    width: 40px;
-    opacity: 0.9;
-    transition: opacity 0.3s ease;
+    height: 120px;
+    width: 120px;
+    max-height: 140px;
+    object-fit: contain;
+    opacity: 0.95;
+    transition: opacity 0.2s ease;
     filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.3));
 }
 
